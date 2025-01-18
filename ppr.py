@@ -1,4 +1,5 @@
 import pandas as pd
+import streamlit as st
 
 SOURCE_FILE = "football_data/Game_Logs_Quarterback.csv"
 MIN_ATTEMPTS = (
@@ -6,46 +7,29 @@ MIN_ATTEMPTS = (
 )
 df = pd.read_csv(SOURCE_FILE)
 
-# For converting numeric string to integers/floats
-numeric_columns = [
-    "passes completed",
-    "passes attempted",
-    "completion percentage",
-    "passing yards",
-    "passing yards per attempt",
-    "td passes",
-    "ints",
-    "sacks",
-    "sacked yards lost",
-    "passer rating",
-    "rushing attempts",
-    "rushing yards",
-    "yards per carry",
-    "rushing tds",
-    "fumbles",
-    "fumbles lost",
-]
-
-df[numeric_columns] = df[numeric_columns].apply(
-    pd.to_numeric, errors="coerce"
-)  # TODO: fix this
 
 df_cleaned = (
     df.drop("Position", axis=1)
-    .rename(columns=str.lower)  # Rename columns to lowercase
     .replace("--", pd.NA)  # Replace '--' with NaN
-    .dropna(subset=["passes attempted"])  # Drop where no passes attempted
-    .loc[lambda x: x["passes attempted"] >= 14]  # Drop where QB attempted >= 14 passes
+    .dropna(subset=["Passes Attempted"])  # Drop where no passes attempted
+    .apply(pd.to_numeric, errors="ignore")  # TODO: fix this, not convert year
+    .loc[lambda x: x["Passes Attempted"] >= 14]  # Drop where QB attempted >= 14 passes
     .reset_index(drop=True)  # Reset index after cleaning
 )
-print(df_cleaned["passes attempted"])
 
-"""
+# adding 'Perfect' Passer Rating
+df_cleaned["improved passer rating"] = (
+    (df_cleaned["Completion Percentage"] - 0.3) * 5
+    + (df_cleaned["Passing Yards Per Attempt"] - 3) * 0.25
+    + (df_cleaned["TD Passes"] / df_cleaned["Passes Attempted"]) * 20
+    + 2.375  # TODO: maybe remove?
+    - (df_cleaned["Ints"] / df_cleaned["Passes Attempted"])
+)
+print(df_cleaned)
+
+st.dataframe(df_cleaned)
 
 
-    ATT = Number of passing attempts
-    CMP = Number of completions
-    YDS = Passing yards
-    TD = Touchdown passes
-    INT = Interceptions
-"""
+# to toggle if the viewer wants to include preaseason games
+def preseason_toggle(df):
+    df.loc[lambda x: x["Season"] == "Regular Season"]
