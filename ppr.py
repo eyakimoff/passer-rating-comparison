@@ -30,6 +30,6 @@ print(df_cleaned)
 st.dataframe(df_cleaned)
 
 
-# to toggle if the viewer wants to include preaseason games
-def preseason_toggle(df):
+# to toggle if the viewer wants to include only regular season games
+def regSeasonToggle(df):
     df.loc[lambda x: x["Season"] == "Regular Season"]
