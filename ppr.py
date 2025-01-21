@@ -18,15 +18,20 @@ df_cleaned = (
 )
 
 # adding 'Perfect' Passer Rating
-df_cleaned["improved passer rating"] = (
-    (df_cleaned["Completion Percentage"] - 0.3) * 5
-    + (df_cleaned["Passing Yards Per Attempt"] - 3) * 0.25
-    + (df_cleaned["TD Passes"] / df_cleaned["Passes Attempted"]) * 20
-    + 2.375  # TODO: maybe remove?
-    - (df_cleaned["Ints"] / df_cleaned["Passes Attempted"])
+df_cleaned["Improved Passer Rating"] = round(
+    (
+        (
+            (df_cleaned["Passes Completed"] / df_cleaned["Passes Attempted"] - 0.3) * 5
+            + (df_cleaned["Passing Yards Per Attempt"] - 3) * 0.25
+            + (df_cleaned["TD Passes"] / df_cleaned["Passes Attempted"]) * 20
+            + (df_cleaned["Ints"] / df_cleaned["Passes Attempted"])
+        )
+        / 6
+    )
+    * 100,
+    1,
 )
-print(df_cleaned)
-
+st.title("Perfect Passer Rating")
 st.dataframe(df_cleaned)
 
 
