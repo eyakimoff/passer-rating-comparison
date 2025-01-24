@@ -1,53 +1,36 @@
 import pandas as pd
 import streamlit as st
+from data_cleaning import get_dataframe
 
-SOURCE_FILE = "football_data/cleaned_Game_Logs_Quarterback.csv"
-MIN_ATTEMPTS = (
-    14  # From 1978–present, the minimum number of passing attempts per team game is 14.
+df = get_dataframe()
+
+st.title("Quarterback Refined Passer Rating Database")
+st.subheader("Overview")
+st.write(
+    "Welcome to the homepage. Below is a table showing the refined passer rating leaderboards. You can toggle between a table which shows extensive game Details, and a simplified table with less game data. This showcases the difference between traditional passer rating formula and the refined version."
 )
-df = pd.read_csv(SOURCE_FILE)
 
-numeric_columns = [
-    "Games Started",
-    "Passes Completed",
-    "Passes Attempted",
-    "Completion Percentage",
-    "Passing Yards",
-    "Passing Yards Per Attempt",
-    "TD Passes",
-    "Ints",
-    "Sacks",
-    "Sacked Yards Lost",
-    "Passer Rating",
-    "Rushing Attempts",
-    "Rushing Yards",
-    "Yards Per Carry",
-    "Rushing TDs",
-    "Fumbles",
-    "Fumbles Lost",
-]
+if "extensive" not in st.session_state:
+    st.session_state.extensive = False
 
-for col in numeric_columns:
-    df[col] = pd.to_numeric(df[col], errors="coerce")
+if st.button("Toggle Extensive Data"):
+    st.session_state.extensive = not st.session_state.extensive
 
-df = df.loc[
-    lambda x: x["Passes Attempted"]
-    >= MIN_ATTEMPTS  # Drop where QB attempted less than 14 passes
-]
-
-# adding 'Perfect' Passer Rating
-df["Improved Passer Rating"] = round(
-    (
-        (
-            (df["Passes Completed"] / df["Passes Attempted"] - 0.3) * 5
-            + (df["Passing Yards Per Attempt"] - 3) * 0.25
-            + (df["TD Passes"] / df["Passes Attempted"]) * 20
-            + (df["Ints"] / df["Passes Attempted"])
-        )
-        / 6
+if st.session_state.extensive:
+    st.dataframe(
+        df[
+            [
+                "Name",
+                "Year",
+                "Season",
+                "Week",
+                "Opponent",
+                "Outcome",
+                "Passer Rating",
+                "Refined Passer Rating",
+                "Passer Rating Difference",
+            ]
+        ]
     )
-    * 100,
-    1,
-)
-
-st.dataframe(df)
+else:
+    st.dataframe(df)
