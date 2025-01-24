@@ -1,7 +1,6 @@
 import streamlit as st
 from data_cleaning import get_dataframe
 from streamlit_tags import st_tags, st_tags_sidebar
-import re
 
 df = get_dataframe()
 
