@@ -36,11 +36,27 @@ if st.session_state.extensive:
 else:
     st.dataframe(df)
 
-# dataframe with top 25 performances
 
+# Customize the layout of scatter plots
+def scatter_plot_update(fig, marker_colour="black"):
+    fig.update_traces(
+        marker=dict(
+            size=1, color=marker_colour, line=dict(width=2, color=marker_colour)
+        )
+    )
+    fig.update_layout(
+        hoverlabel=dict(bgcolor=marker_colour, font_size=12, font_family="sans serif"),
+        xaxis_title="Year",
+        yaxis_title="Refined Passer Rating",
+        title_font_size=20,
+    )
+    return fig
+
+
+# dataframe with top 25 performances
 df_top25 = df.nlargest(25, "Refined Passer Rating")
 
-fig = px.scatter(
+top25_fig = px.scatter(
     df_top25,
     x=df_top25["Year"],
     y=df_top25["Refined Passer Rating"],
@@ -53,14 +69,21 @@ fig = px.scatter(
     title="Refined Passer Rating Top 25 Performances",
 )
 
-# Customize the layout
-fig.update_traces(
-    marker=dict(size=6, color="royalblue", line=dict(width=2, color="black"))
+top25_fig = scatter_plot_update(fig=top25_fig, marker_colour="green")
+st.plotly_chart(top25_fig)
+
+df_bottom25 = df.nsmallest(25, "Refined Passer Rating")
+bottom25_fig = px.scatter(
+    df_bottom25,
+    x=df_bottom25["Year"],
+    y=df_bottom25["Refined Passer Rating"],
+    text=df_bottom25["Name"],
+    hover_data={
+        "Refined Passer Rating": True,
+        "Year": True,
+        "Week": True,
+    },
+    title="Refined Passer Rating Bottom 25 Performances",
 )
-fig.update_layout(
-    hoverlabel=dict(bgcolor="blue", font_size=12, font_family="sans serif"),
-    xaxis_title="Year",
-    yaxis_title="Refined Passer Rating",
-    title_font_size=20,
-)
-st.plotly_chart(fig)
+bottom25_fig = scatter_plot_update(fig=bottom25_fig, marker_colour="red")
+st.plotly_chart(bottom25_fig)
