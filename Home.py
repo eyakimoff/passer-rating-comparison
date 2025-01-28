@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 from utils.data_cleaning import get_dataframe
 import plotly.express as px
+import plotly.graph_objects as go
 
 df = get_dataframe()
 
@@ -66,7 +67,7 @@ top25_fig = px.scatter(
         "Year": True,
         "Week": True,
     },
-    title="Refined Passer Rating Top 25 Performances",
+    title="Refined Passer Rating Top 25 Performances (1970-2016)",
 )
 
 top25_fig = scatter_plot_update(fig=top25_fig, marker_colour="green")
@@ -83,7 +84,41 @@ bottom25_fig = px.scatter(
         "Year": True,
         "Week": True,
     },
-    title="Refined Passer Rating Bottom 25 Performances",
+    title="Refined Passer Rating Bottom 25 Performances (1970-2016)",
 )
 bottom25_fig = scatter_plot_update(fig=bottom25_fig, marker_colour="red")
 st.plotly_chart(bottom25_fig)
+df_comp = df
+df_comp["Passer Rating Difference Absolute"] = abs(df["Passer Rating Difference"])
+df_comp = df.nlargest(10, "Passer Rating Difference Absolute")
+df_comp["Name and Date"] = (
+    df_comp["Name"]
+    + ", Year: "
+    + df_comp["Year"].astype(str)
+    + ", Week: "
+    + df_comp["Week"].astype(str)
+)
+
+comp_fig = go.Figure(
+    data=[
+        go.Bar(
+            name="Passer Rating", x=df_comp["Name and Date"], y=df_comp["Passer Rating"]
+        ),
+        go.Bar(
+            name="Refined Passer Rating",
+            x=df_comp["Name and Date"],
+            y=df_comp["Refined Passer Rating"],
+        ),
+    ]
+)
+
+comp_fig.update_layout(
+    title="Passer Rating vs Refined Passer Rating",
+    barmode="group",  # Ensure bars and line don't stack
+    template="plotly_white",  # Optional: clean white background
+)
+
+st.write(
+    "The figure below highlights the differences between the traditional passer rating calculation and the refined formula. It displays the ten games with the largest discrepancies between the two formulas. The refined formula is notably harsher on poor performances."
+)
+st.plotly_chart(comp_fig)
