@@ -15,7 +15,7 @@ df["Outcome"] = df["Outcome"].map({"W": 1, "L": 0})
 df = df.dropna(subset=["Outcome"])
 
 
-# correlation
+# Correlation
 traditional_corr = df["Passer Rating"].corr(df["Outcome"])
 refined_corr = df["Refined Passer Rating"].corr(df["Outcome"])
 print(traditional_corr)
