@@ -1,4 +1,7 @@
-# Passer Rating Analysis: Traditional vs. Refined Formulas
+import streamlit as st
+
+st.markdown(
+    """# Passer Rating Analysis: Traditional vs. Refined Formulas
 
 ## Overview
 
@@ -161,3 +164,5 @@ For questions or feedback, feel free to reach out:
 
 -   **GitHub**: [eyakimoff](https://github.com/yourusername)
 -   **LinkedIn**: [Eric Yakimoff](https://www.linkedin.com/in/eric-yakimoff-3537981a3/)
+"""
+)

@@ -1,10 +1,11 @@
-from data_cleaning import get_dataframe
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import streamlit as st
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, classification_report, roc_curve, auc
+from data_cleaning import get_dataframe
 
 df = get_dataframe()
 
@@ -63,13 +64,22 @@ y_prob_ref = model_ref.predict_proba(X_test_ref)[:, 1]
 fpr_ref, tpr_ref, _ = roc_curve(y_test, y_prob_ref)
 roc_auc_ref = auc(fpr_ref, tpr_ref)
 
-# Plotting
-plt.figure(figsize=(10, 6))
-plt.plot(fpr_trad, tpr_trad, label=f"Traditional (AUC = {roc_auc_trad:.2f})")
-plt.plot(fpr_ref, tpr_ref, label=f"Refined (AUC = {roc_auc_ref:.2f})")
-plt.plot([0, 1], [0, 1], "k--")  # Diagonal for random guessing
-plt.xlabel("False Positive Rate")
-plt.ylabel("True Positive Rate")
-plt.title("ROC Curve")
-plt.legend(loc="lower right")
-plt.show()
+# Create the ROC Curve plot
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(fpr_trad, tpr_trad, label=f"Traditional (AUC = {roc_auc_trad:.2f})")
+ax.plot(fpr_ref, tpr_ref, label=f"Refined (AUC = {roc_auc_ref:.2f})")
+ax.plot([0, 1], [0, 1], "k--")  # Diagonal for random guessing
+ax.set_xlabel("False Positive Rate")
+ax.set_ylabel("True Positive Rate")
+ax.set_title("ROC Curve")
+ax.legend(loc="lower right")
+
+
+st.title(
+    "Receiver Operating Characteristic (ROC) Curve: Traditional vs. Refined Passer Rating"
+)
+# Display in Streamlit
+st.pyplot(fig)
+st.write(
+    "This ROC curve compares the predictive performance of the Traditional and Refined Passer Rating models in distinguishing between winning and losing games. The curve plots the True Positive Rate (TPR) against the False Positive Rate (FPR) for each model. A higher Area Under the Curve (AUC) indicates better predictive accuracy. The dashed diagonal line represents random guessing (AUC = 0.50). A model with an AUC closer to 1.00 is a stronger predictor of game outcomes."
+)
