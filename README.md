@@ -37,7 +37,7 @@ The passer rating formulas are widely used metrics for evaluating quarterback pe
     -   For losses (0): 0.72
     -   For wins (1): 0.69
 -   **Confusion Matrix**:
-  
+
     $$
     \begin{bmatrix}
     TN = 1019 & FP = 390 \\
@@ -57,7 +57,7 @@ The passer rating formulas are widely used metrics for evaluating quarterback pe
     -   For losses (0): 0.73
     -   For wins (1): 0.60
 -   **Confusion Matrix**:
-  
+
     $$
     \begin{bmatrix}
     TN = 1023 & FP = 386 \\
@@ -72,13 +72,14 @@ The passer rating formulas are widely used metrics for evaluating quarterback pe
 1. **Traditional Rating Model Performs Slightly Better**:
 
     The accuracy of the traditional model is 71%, compared to 66% for the refined model.
+
     - Recall for wins (69%) is significantly higher than the refined model (60%).
     - The traditional rating model misses fewer actual wins, with 439 false negatives vs. 559 in the refined model.
 
 2. **Refined Rating Model Is Better at Identifying Losses**:
 
     - The refined model has a higher recall for losses (73%), which correctly predicts more actual losses than the traditional model (72%).
-    However, this comes at the cost of lower win recall (60%), meaning it struggles to classify wins correctly.
+      However, this comes at the cost of lower win recall (60%), meaning it struggles to classify wins correctly.
 
 3. **Impact of Confusion Matrix Differences**:
 
