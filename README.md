@@ -71,14 +71,14 @@ The passer rating formulas are widely used metrics for evaluating quarterback pe
 
 1. **Traditional Rating Model Performs Slightly Better**:
 
-    - Accuracy of the traditional model is 71%, compared to 66% for the refined model.
+    The accuracy of the traditional model is 71%, compared to 66% for the refined model.
     - Recall for wins (69%) is significantly higher than the refined model (60%).
     - The traditional rating model misses fewer actual wins, with 439 false negatives vs. 559 in the refined model.
 
 2. **Refined Rating Model Is Better at Identifying Losses**:
 
-    - The refined model has a higher recall for losses (73%), meaning it correctly predicts more actual losses than the traditional model (72%).
-    - However, this comes at the cost of lower win recall (60%), meaning it struggles to correctly classify wins.
+    - The refined model has a higher recall for losses (73%), which correctly predicts more actual losses than the traditional model (72%).
+    However, this comes at the cost of lower win recall (60%), meaning it struggles to classify wins correctly.
 
 3. **Impact of Confusion Matrix Differences**:
 
@@ -94,7 +94,7 @@ The passer rating formulas are widely used metrics for evaluating quarterback pe
 
 The traditional passer rating remains a stronger predictor of winning games, with a higher correlation to game outcomes and better overall accuracy. The refined passer rating prioritizes identifying poor performances and losses, but its harsh penalties may overcorrect and reduce its effectiveness in predicting wins.
 
-If the goal is predicting game outcomes, the traditional model is preferable. However, the refined model offers a different perspective on quarterback performance by emphasizing mistakes and underperformance more heavily. Further refinements could help balance its evaluation of both strong and weak performances.
+If the goal is predicting game outcomes, the traditional model is preferable. However, the refined model offers a different perspective on quarterback performance, emphasizing mistakes and underperformance more heavily. Further refinements could help balance its evaluation of both strong and weak performances.
 
 ---
 
@@ -166,7 +166,6 @@ $d = 2.375 - \left( \frac{\text{INT}}{\text{ATT}} \times 25 \right)$
 Where:
 
 -   **ATT** = Number of passing attempts
--   **CMP** = Number of completions
 -   **YDS** = Passing yards
 -   **TD** = Touchdown passes
 -   **INT** = Interceptions
