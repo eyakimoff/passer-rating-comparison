@@ -18,8 +18,8 @@ df = df.dropna(subset=["Outcome"])
 # Correlation
 traditional_corr = df["Passer Rating"].corr(df["Outcome"])
 refined_corr = df["Refined Passer Rating"].corr(df["Outcome"])
-print(traditional_corr)
-print(refined_corr)
+print("Traditional Passer Rating Outcome Correlation: ", traditional_corr)
+print("Refined Passer Rating Outcome Correlation: ", refined_corr)
 
 X_traditional = df[["Passer Rating"]]
 X_refined = df[["Refined Passer Rating"]]

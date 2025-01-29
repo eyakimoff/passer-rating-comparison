@@ -76,8 +76,7 @@ df_cleaned = df_cleaned.loc[
 df_cleaned["Refined Passer Rating"] = round(
     (
         (
-            (df_cleaned["Passes Completed"] / df_cleaned["Passes Attempted"] - 0.3) * 5
-            + (df_cleaned["Passing Yards Per Attempt"] - 3) * 0.25
+            (df_cleaned["Passing Yards Per Attempt"] - 3) * 0.25
             + (df_cleaned["TD Passes"] / df_cleaned["Passes Attempted"]) * 20
             + (df_cleaned["Ints"] / df_cleaned["Passes Attempted"])
         )
