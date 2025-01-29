@@ -37,12 +37,9 @@ df_cleaned = (
     .loc[df["Season"].isin(["Regular Season", "Postseason"])]  # remove preseason games
 )
 
+# make numeric columns numeric type
 for col in numeric_columns:
     df_cleaned[col] = pd.to_numeric(df_cleaned[col], errors="coerce")
-
-df_cleaned.loc[
-    lambda x: x["Passes Attempted"] >= 14  # Drop where QB attempted less than 14 passes
-]
 
 numeric_columns = [
     "Games Started",
@@ -94,13 +91,13 @@ df_cleaned["Passer Rating Difference"] = round(
 # Sort data based on refined passer rating
 df_cleaned = df_cleaned.sort_values(by="Refined Passer Rating", ascending=False)
 
-# concatenate game date columnt and year to get mm/dd/yyy
+# concatenate game date column and year to get mm/dd/yyy
 df_cleaned["Game Date"] = df_cleaned["Game Date"] + "/" + df["Year"].astype(str)
 
-# TODO: may need to move this to other file
+# make game date a date type
 df_cleaned["Game Date"] = pd.to_datetime(df_cleaned["Game Date"])
 
-# change name format from 'lastname, firstname' to 'fistname lastname'
+# change name format from 'lastname, firstname' to 'firstname lastname'
 df_cleaned["Name"] = df_cleaned["Name"].apply(
     lambda x: " ".join(reversed(x.split(", ")))
 )
