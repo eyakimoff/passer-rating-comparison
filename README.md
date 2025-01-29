@@ -37,6 +37,7 @@ The passer rating formulas are widely used metrics for evaluating quarterback pe
     -   For losses (0): 0.72
     -   For wins (1): 0.69
 -   **Confusion Matrix**:
+  
     $$
     \begin{bmatrix}
     TN = 1019 & FP = 390 \\
